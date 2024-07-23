@@ -1,19 +1,29 @@
 // src/PqGrid.tsx
 
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import $ from 'jquery';
 import 'pqgrid/pqgrid.min.css';
 import 'pqgrid/pqgrid.min.js';
+import axios from "axios";
+
+interface Data {
+  rank: number;
+  name: string;
+  age: number;
+}
 
 const PqGrid: React.FC = () => {
   const gridRef = useRef<HTMLDivElement>(null);
+  const [data, setData] = useState<Data[]>([]);
 
   useEffect(() => {
-    const data = [
-      { rank: 1, name: 'John', age: 28 },
-      { rank: 2, name: 'Anna', age: 22 },
-      { rank: 3, name: 'Peter', age: 35 }
-    ];
+    // API에서 데이터 가져오기
+    const fetchData = async () => {
+      const result = await axios('http://localhost:5000/data');
+      setData(result.data);
+    };
+
+    fetchData();
 
     const colModel = [
       { title: "Rank", width: 100, dataIndx: "rank" },
