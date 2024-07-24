@@ -3,9 +3,6 @@ paramQuery 연습용 프로젝트
 
 
 ## paramQuery 설치 법
-네, 맞습니다. `pqgrid`는 별도의 패키지로 설치할 수 있습니다. 이를 위해 `npm install pqgrid`를 사용하면 됩니다. 그러면 해당 라이브러리를 React 프로젝트에 통합할 수 있습니다.
-
-다음은 TypeScript와 React 프로젝트에서 `pqgrid`를 사용하는 방법입니다.
 
 ### 1. React 프로젝트 생성
 
