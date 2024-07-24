@@ -245,7 +245,7 @@ const PqGrid: React.FC = () => {
   useEffect(() => {
     // API에서 데이터 가져오기
     const fetchData = async () => {
-      const result = await axios('http://localhost:5000/data');
+      const result = await axios('http://localhost:5001/data');
       setData(result.data);
     };
 
