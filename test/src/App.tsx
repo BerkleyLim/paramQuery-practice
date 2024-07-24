@@ -7,9 +7,9 @@ import PqGrid from "./PqGrid";
 const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
+      {/*<header className="App-header">*/}
         <h1>pqGrid with React and TypeScript</h1>
-      </header>
+      {/*</header>*/}
       <PqGrid />
     </div>
   );
