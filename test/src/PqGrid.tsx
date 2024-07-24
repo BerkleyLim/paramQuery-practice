@@ -1,5 +1,3 @@
-// src/PqGrid.tsx
-
 import React, { useEffect, useRef, useState } from 'react';
 import $ from 'jquery';
 import 'pqgrid/pqgrid.min.css';
@@ -22,6 +20,10 @@ interface Data {
   joinDate: string;
   department: string;
   status: string;
+  cellColor: string;
+  foreColor: string;
+  foreSize: number;
+  textAlign: number;
 }
 
 const PqGrid: React.FC = () => {
@@ -29,17 +31,19 @@ const PqGrid: React.FC = () => {
   const [data, setData] = useState<Data[]>([]);
 
   useEffect(() => {
-    // API에서 데이터 가져오기
     const fetchData = async () => {
-      const result = await axios('http://localhost:5001/data');
-      setData(result.data);
+      try {
+        const result = await axios.get('http://localhost:5001/data');
+        setData(result.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
 
     fetchData();
   }, []);
 
   useEffect(() => {
-    console.log(data)
     const colModel = [
       { title: "ID", width: 50, dataIndx: "id" },
       { title: "Name", width: 150, dataIndx: "name" },
@@ -59,19 +63,59 @@ const PqGrid: React.FC = () => {
     ];
 
     if (gridRef.current) {
-      ($(gridRef.current) as any).pqGrid({
+      const $grid = $(gridRef.current) as any;
+      $grid.pqGrid({
         width: 'auto',
         height: '1000',
         dataModel: { data: data },
         colModel: colModel,
-        selectionModel: { type: 'cell' }, // 셀 선택 활성화
-        editable: true // 셀 편집 활성화
+        selectionModel: { type: 'cell' },
+        editable: true,
+        cellSave: (evt: any, ui: any) => {
+          const updatedData = [...data];
+          const rowIndx = ui.rowIndx;
+          const dataIndx = ui.dataIndx as keyof Data;
+          const newVal = ui.newVal;
+
+          if (rowIndx >= 0 && dataIndx) {
+            const updatedRow = { ...updatedData[rowIndx], [dataIndx]: newVal };
+            updatedData[rowIndx] = updatedRow;
+            setData(updatedData);
+            console.log('Updated Data:', updatedData);
+          }
+        },
+        render: (evt: any, ui: any) => {
+          const { rowData, dataIndx, $cell } = ui;
+          if (rowData && $cell) {
+            const cellColor = rowData.cellColor;
+            const foreColor = rowData.foreColor;
+            const foreSize = rowData.foreSize;
+            const textAlign = rowData.textAlign;
+
+            if (cellColor) {
+              $cell.css("background-color", `#${cellColor}`);
+            }
+            if (foreColor) {
+              $cell.css("color", `#${foreColor}`);
+            }
+            if (foreSize) {
+              $cell.css("font-size", `${foreSize}px`);
+            }
+            if (textAlign) {
+              let align = "left";
+              if (textAlign === 2) align = "center";
+              if (textAlign === 3) align = "right";
+              $cell.css("text-align", align);
+            }
+          }
+        }
       });
     }
 
     return () => {
       if (gridRef.current) {
-        ($(gridRef.current) as any).pqGrid('destroy');
+        const $grid = $(gridRef.current) as any;
+        $grid.pqGrid('destroy');
       }
     };
   }, [data]);
