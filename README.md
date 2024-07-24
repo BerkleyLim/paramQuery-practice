@@ -125,8 +125,6 @@ npm start
 
 ## JSON-SERVER 활용 법
 
-`json-server`를 사용하여 간단한 REST API 서버를 설정하고, 이를 통해 2000개의 샘플 데이터를 제공하는 환경을 구성하는 방법을 단계별로 설명하겠습니다.
-
 ### 1. `json-server` 설치
 
 먼저 `json-server`를 전역으로 설치합니다.
