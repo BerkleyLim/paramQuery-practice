@@ -178,7 +178,7 @@ node generateData.js
 이제 `json-server`를 실행하여 API 서버를 시작합니다.
 
 ```bash
-json-server --watch db.json --port 5000
+json-server --watch db.json --port 5001
 ```
 
 `json-server`가 `db.json` 파일을 기반으로 RESTful API를 제공합니다. 예를 들어, `http://localhost:5000/data`에서 데이터를 확인할 수 있습니다.
